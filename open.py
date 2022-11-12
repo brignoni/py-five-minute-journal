@@ -6,6 +6,8 @@ def main():
     journal = OneMinute.Journal()
 
     journal.open()
+    
+    journal.save()
 
 
 if __name__ == '__main__':

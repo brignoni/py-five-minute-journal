@@ -1,9 +1,11 @@
-import requests
+from datetime import date
 import json
+import requests
 
 QUOTE_API = 'https://zenquotes.io/api/today'
 
 TITLE = 'ONE MINUTE JOURNAL'
+FILE_PREFIX = '1MJ-'
 
 QUESTION_GRATEFUL = 'I am grateful for...'
 QUESTION_WHAT = 'What would make today great?'
@@ -31,8 +33,16 @@ class Journal(Printable):
         QUESTION_HIGHLIGHTS,
         QUESTION_LEARN,
     ]) -> None:
-        self.day_questions = map(Question, day_questions)
-        self.night_questions = map(Question, night_questions)
+        self.date = date.today()
+        
+        self.day_questions = list(map(Question, day_questions))
+        self.night_questions = list(map(Question, night_questions))
+
+    def year(self):
+        return self.date.year
+    
+    def today(self):
+        return str(self.date)
 
     def open(self):
 
@@ -42,8 +52,22 @@ class Journal(Printable):
         self.quote = Quote()
         self.quote.load().display()
 
-        for question in self.day_questions:
-            question.ask()
+        for day_question in self.day_questions:
+            day_question.ask()
+            
+        self.print('')
+
+    def markdown(self):
+        md = f'# {TITLE}\n\n\n'
+        md += self.quote.markdown()
+        for day_question in self.day_questions:
+            md += day_question.markdown()
+        return md
+
+    def save(self):
+        file = open(f'.journals/{self.year()}/{FILE_PREFIX}{self.today()}.md', 'w+')
+        file.write(self.markdown())
+        file.close()
 
 
 class Question(Printable):
@@ -62,6 +86,12 @@ class Question(Printable):
     def content(self):
         return self.question
 
+    def markdown(self) -> str:
+        md = f'## {self.content()}\n\n'
+        for answer in self.answers:
+            md += answer.markdown()
+        return md + '\n\n'
+
     def __str__(self) -> str:
         answers = '\n '.join(map(str, self.answers))
         return f"<Question content='{self.question}'>\n {answers}\n</Question>"
@@ -79,6 +109,9 @@ class Answer:
     def content(self):
         return self.answer
 
+    def markdown(self):
+        return f'{self.id()}. {self.content()}\n'
+
     def __str__(self) -> str:
         return f'<Answer id={self.id()} content="{self.content()}">'
 
@@ -94,6 +127,13 @@ class Quote(Printable):
         self.quote = data[0]['q']
         self.author = data[0]['a']
         return self
+
+    def markdown(self):
+        return '> ' + ('\n> '.join([
+            self.quote,
+            '',
+            f'~ {self.author}'
+        ])) + '\n\n\n'
 
     def display(self):
         if (self.quote and self.author):
