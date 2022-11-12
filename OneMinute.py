@@ -23,24 +23,26 @@ class Printable:
 
 class Journal(Printable):
 
-    def __init__(self, questions=[
+    def __init__(self, day_questions=[
         QUESTION_GRATEFUL,
         QUESTION_WHAT,
         QUESTION_AFFIRMATION,
-        # QUESTION_HIGHLIGHTS,
-        # QUESTION_LEARN,
+    ], night_questions=[
+        QUESTION_HIGHLIGHTS,
+        QUESTION_LEARN,
     ]) -> None:
-        self.questions = map(Question, questions)
+        self.day_questions = map(Question, day_questions)
+        self.night_questions = map(Question, night_questions)
 
     def open(self):
 
         self.print(TITLE)
         self.print('Friday, Nov 11, 2022 8:30 am', 1)
-    
+
         self.quote = Quote()
         self.quote.load().display()
-        
-        for question in self.questions:
+
+        for question in self.day_questions:
             question.ask()
 
 
@@ -53,9 +55,7 @@ class Question(Printable):
         self.answers = []
 
     def ask(self):
-
-        self.print(self.question)
-
+        self.print(self.content())
         for idx in range(0, self.total_answers):
             self.answers.append(Answer(idx))
 
@@ -87,15 +87,14 @@ class Quote(Printable):
 
     def __init__(self) -> None:
         pass
-    
+
     def load(self):
         quote_response = requests.get(QUOTE_API)
         data = json.loads(quote_response.content)
         self.quote = data[0]['q']
         self.author = data[0]['a']
         return self
-        
-        
+
     def display(self):
         if (self.quote and self.author):
             self.print(f'"{self.quote}"')
