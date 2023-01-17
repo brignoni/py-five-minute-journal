@@ -1,18 +1,10 @@
-from datetime import date
+from datetime import datetime
 import json
 import requests
 
 QUOTE_API = 'https://zenquotes.io/api/today'
 
-TITLE = 'ONE MINUTE JOURNAL'
-FILE_PREFIX = '1MJ-'
-
-QUESTION_GRATEFUL = 'I am grateful for...'
-QUESTION_WHAT = 'What would make today great?'
-QUESTION_AFFIRMATION = 'Daily Affirmation'
-QUESTION_HIGHLIGHTS = 'Highlights of the Day'
-QUESTION_LEARN = 'What did you learn today?'
-
+TITLE = 'FIVE MINUTE JOURNAL'
 
 class Printable:
     def __init__(self) -> None:
@@ -25,32 +17,28 @@ class Printable:
 
 class Journal(Printable):
 
-    def __init__(self, day_questions=[
-        QUESTION_GRATEFUL,
-        QUESTION_WHAT,
-        QUESTION_AFFIRMATION,
-    ], night_questions=[
-        QUESTION_HIGHLIGHTS,
-        QUESTION_LEARN,
-    ]) -> None:
-        self.date = date.today()
-        
+    def __init__(self, name: str, day_questions: list, night_questions: list, prefix: str) -> None:
+        self.name = name
+        self.datetime = datetime.today()
+        self.prefix = prefix
         self.day_questions = list(map(Question, day_questions))
         self.night_questions = list(map(Question, night_questions))
 
     def year(self):
-        return self.date.year
+        return self.datetime.year
     
-    def today(self):
-        return str(self.date)
+    def iso_date(self):
+        return  self.datetime.strftime("%Y-%m-%d")
+
+    def pretty_date(self):
+        return self.datetime.strftime('%A, %b %w %Y %I:%M %p')
 
     def open(self):
 
-        self.print(TITLE)
-        self.print('Friday, Nov 11, 2022 8:30 am', 1)
+        self.print(f'{self.name} | {self.pretty_date()}', 1)
 
         self.quote = Quote()
-        self.quote.load().display()
+        self.quote.load().print()
 
         for day_question in self.day_questions:
             day_question.ask()
@@ -58,14 +46,14 @@ class Journal(Printable):
         self.print('')
 
     def markdown(self):
-        md = f'# {TITLE}\n\n\n'
+        md = f'# {self.name}\n\n{self.pretty_date()}\n\n'
         md += self.quote.markdown()
         for day_question in self.day_questions:
             md += day_question.markdown()
         return md
 
     def save(self):
-        file = open(f'.journals/{self.year()}/{FILE_PREFIX}{self.today()}.md', 'w+')
+        file = open(f'journals/{self.year()}/{self.prefix}{self.iso_date()}.md', 'w+')
         file.write(self.markdown())
         file.close()
 
@@ -88,8 +76,11 @@ class Question(Printable):
 
     def markdown(self) -> str:
         md = f'## {self.content()}\n\n'
-        for answer in self.answers:
-            md += answer.markdown()
+        if len(self.answers) > 0:
+            for answer in self.answers:
+                md += answer.markdown()
+        else:
+            md += 'No answer.\n'
         return md + '\n\n'
 
     def __str__(self) -> str:
@@ -113,7 +104,7 @@ class Answer:
         return f'{self.id()}. {self.content()}\n'
 
     def __str__(self) -> str:
-        return f'<Answer id={self.id()} content="{self.content()}">'
+        return f'<Answer id={self.id()} content="{self.content()}"/>'
 
 
 class Quote(Printable):
@@ -135,7 +126,7 @@ class Quote(Printable):
             f'~ {self.author}'
         ])) + '\n\n\n'
 
-    def display(self):
+    def print(self):
         if (self.quote and self.author):
-            self.print(f'"{self.quote}"')
-            self.print(f'~ {self.author}', 1)
+            super().print(f'"{self.quote}"')
+            super().print(f'~ {self.author}', 1)
