@@ -2,6 +2,8 @@
 
 A simple Python application inspired by [The Five Minute Journal - Intelligent Change](https://www.intelligentchange.com/products/the-five-minute-journal).
 
+![Python Five Minute Journal Cover](cover.jpg)
+
 Read the Hashnode article [here](https://brignoni.dev/preview/63c5bd0a7b3b430008b12dd2).
 
 ### Installation
@@ -33,7 +35,7 @@ Your journal markdown files will be saved in the `journals` directory.
 
 ```markdown
 
-Five Minute Journal | Friday, Jan 1 2023
+Five Minute Journal | Wednesday, Jan 18 2023
 
 > Dwell on the beauty of life. Watch the stars, and see yourself running with them.
 > 
@@ -68,6 +70,6 @@ Five Minute Journal | Friday, Jan 1 2023
 ### What did I learn today?
 1. New Portuguese vocabulary
 2. Completed an AWS hands-on lab
-3. Studied for AWS Certified SysOps Admin Associate 
+3. Studied for AWS Certified SysOps Admin Associate
 
 ```
