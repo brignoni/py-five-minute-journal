@@ -34,28 +34,10 @@ class Journal:
         return self._datetime.strftime('%I:%M %p')
 
     def pretty_date(self) -> str:
-        return self._datetime.strftime('%A, %b %w %Y %I:%M %p')
+        return self._datetime.strftime('%A, %b %w %Y')
 
     def header_title(self) -> str:
         return f'{self._title} | {self.pretty_date()}'
-
-    # def open(self):
-
-    #     self.print(self.header_title(), 1)
-    #     self._quote = Quote()
-    #     # self._quote.load().print()
-
-    #     for day_question in self._day_questions:
-    #         day_question.ask()
-
-    #     self.print('')
-
-    # def markdown(self):
-    #     md = f'# {self._title}\n\n{self.pretty_date()}\n\n'
-    #     md += self._quote.markdown()
-    #     for day_question in self._day_questions:
-    #         md += day_question.markdown()
-    #     return md
 
     def day_questions(self):
         return self._day_questions
@@ -129,11 +111,6 @@ class Quote:
     def author(self):
         return self._author
 
-    # def print(self):
-    #     if (self.content() and self.author()):
-    #         super().print(f'"{self.content()}"')
-    #         super().print(f'~ {self.author()}', 1)
-
 
 class JournalCommandLine:
 
@@ -148,19 +125,28 @@ class JournalCommandLine:
             id = idx + 1
             question.answer(id, input(f'\n {id}. '))
 
-    def prompt(self):
-        self.print(self._journal.header_title(), 1)
-
+    def prompt_quote(self):
         self._quote.load()
-
         if (self._quote.content() and self._quote.author()):
             self.print(f'"{self._quote.content()}"')
             self.print(f'~ {self._quote.author()}', 1)
 
-        if self._storage.exists(self._journal):
+    def prompt(self):
+
+        if self._storage.filled_once(self._journal):
+            self.print(self._journal.header_title(), 1)
             for question in self._journal.night_questions():
                 self.ask(question)
+        elif self._storage.filled_twice(self._journal):
+            self.print(
+                "Today's journal is here: " +
+                self._storage.file_path(self._journal)
+            )
+            self.print('')
+
         else:
+            self.print(self._journal.header_title(), 1)
+            self.prompt_quote()
             for question in self._journal.day_questions():
                 self.ask(question)
 

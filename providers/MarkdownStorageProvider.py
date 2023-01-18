@@ -1,10 +1,13 @@
 import os
+import re
 from pathlib import Path
 from providers.BaseStorageProvider import BaseStorageProvider
 from jinja2 import Environment, PackageLoader, select_autoescape
 
 
 class MarkdownStorageProvider(BaseStorageProvider):
+
+    TIME_REGEX = r'(\d{2}:\d{2} \w{2})'
 
     def __init__(self, dir: str, header_template: str, question_template: str) -> None:
         self._dir = dir
@@ -21,24 +24,29 @@ class MarkdownStorageProvider(BaseStorageProvider):
     def file_path(self, journal):
         return f'{self.year_path(journal)}/{journal.id()}.md'
 
+    def filled_times(self, journal, count: int):
+        filepath = self.file_path(journal)
+        file = Path(filepath)
+        try:
+            content = file.read_text()
+            matches = re.findall(self.TIME_REGEX, content)
+            return len(matches) == count
+        except FileNotFoundError:
+            return False
+
     def exists(self, journal):
-        file = Path(self.file_path(journal))
-        return file.is_file()
+        return self.filled_times(journal, 1)
 
-    # def markdown_quote(self, quote):
-    #     return '> ' + ('\n> '.join([
-    #         quote.quote(),
-    #         '',
-    #         f'~ {quote.author()}'
-    #     ])) + '\n\n\n'
+    def filled_once(self, journal):
+        return self.filled_times(journal, 1)
 
-    # def markdown_question(self, question):
-    #     pass
+    def filled_twice(self, journal):
+        return self.filled_times(journal, 2)
 
     def transform_answer(self, a):
         return {
-            'id': a.id(), 
-            'content': a.content() 
+            'id': a.id(),
+            'content': a.content()
         }
 
     def transform_question(self, q):
@@ -47,44 +55,28 @@ class MarkdownStorageProvider(BaseStorageProvider):
             'answers': map(self.transform_answer, q.answers()),
         }
 
-    def questions(self):
-        return []
-
     def day_questions(self, journal):
         return map(self.transform_question, journal.day_questions())
 
     def night_questions(self, journal):
         return map(self.transform_question, journal.night_questions())
 
-    def markdown(self, journal, quote):
-        output = ''
-        
-        if self.exists(journal):
-            output += self._header_template.render(
-                author=quote.author(),
-                quote=quote.content(),
-                title=journal.title(),
-                date=journal.pretty_date()
-            )
-            output += '\n' + self._question_template.render(
-                questions=self.day_questions(journal)
-            )
-        else:
-            output += '\n' + self._question_template.render(
-                questions=self.night_questions(journal)
-            )
-        
-        return output
-
-    def save(self, journal, quote):        
-        if self.exists(journal):
+    def save(self, journal, quote):
+        if self.filled_once(journal):
             self.save_night(journal)
-        else:
+        elif not self.filled_twice(journal):
             self.save_day(journal, quote)
 
     def save_day(self, journal, quote):
 
-        output = self.markdown(journal, quote)
+        output = self._header_template.render(
+            author=quote.author(),
+            quote=quote.content(),
+            title=journal.title(),
+            date=journal.pretty_date()
+        ) + '\n\n' + self._question_template.render(
+            questions=self.day_questions(journal)
+        )
 
         if not os.path.exists(self.year_path(journal)):
             os.makedirs(self.year_path(journal))
@@ -94,4 +86,11 @@ class MarkdownStorageProvider(BaseStorageProvider):
         file.close()
 
     def save_night(self, journal):
-        pass
+
+        output = self._question_template.render(
+            questions=self.night_questions(journal)
+        )
+
+        file = open(self.file_path(journal), 'a')
+        file.write(output)
+        file.close()
