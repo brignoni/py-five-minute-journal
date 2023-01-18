@@ -1,113 +1,117 @@
 from datetime import datetime
 import json
 import requests
+from providers.BaseStorageProvider import BaseStorageProvider
 
 QUOTE_API = 'https://zenquotes.io/api/today'
 
-TITLE = 'FIVE MINUTE JOURNAL'
 
-class Printable:
-    def __init__(self) -> None:
-        pass
+class Journal:
 
-    def print(self, str, n=2):
-        newlines = n * '\n'
-        print(f"{newlines} {str}")
+    def __init__(self, namespace: str, title: str, day_questions: list, night_questions: list) -> None:
+        self._title = title
+        self._datetime = datetime.today()
+        self._namespace = namespace
+        self._day_questions = list(map(Question, day_questions))
+        self._night_questions = list(map(Question, night_questions))
+
+    def namespace(self) -> str:
+        return self._namespace
+
+    def id(self) -> str:
+        return f'{self.namespace()}-{self.iso_date()}'
+
+    def title(self) -> str:
+        return self._title
+
+    def year(self) -> int:
+        return self._datetime.year
+
+    def iso_date(self) -> str:
+        return self._datetime.strftime("%Y-%m-%d")
+
+    def iso_time(self) -> str:
+        return self._datetime.strftime('%I:%M %p')
+
+    def pretty_date(self) -> str:
+        return self._datetime.strftime('%A, %b %w %Y %I:%M %p')
+
+    def header_title(self) -> str:
+        return f'{self._title} | {self.pretty_date()}'
+
+    # def open(self):
+
+    #     self.print(self.header_title(), 1)
+    #     self._quote = Quote()
+    #     # self._quote.load().print()
+
+    #     for day_question in self._day_questions:
+    #         day_question.ask()
+
+    #     self.print('')
+
+    # def markdown(self):
+    #     md = f'# {self._title}\n\n{self.pretty_date()}\n\n'
+    #     md += self._quote.markdown()
+    #     for day_question in self._day_questions:
+    #         md += day_question.markdown()
+    #     return md
+
+    def day_questions(self):
+        return self._day_questions
+
+    def night_questions(self):
+        return self._night_questions
 
 
-class Journal(Printable):
-
-    def __init__(self, name: str, day_questions: list, night_questions: list, prefix: str) -> None:
-        self.name = name
-        self.datetime = datetime.today()
-        self.prefix = prefix
-        self.day_questions = list(map(Question, day_questions))
-        self.night_questions = list(map(Question, night_questions))
-
-    def year(self):
-        return self.datetime.year
-    
-    def iso_date(self):
-        return  self.datetime.strftime("%Y-%m-%d")
-
-    def pretty_date(self):
-        return self.datetime.strftime('%A, %b %w %Y %I:%M %p')
-
-    def open(self):
-
-        self.print(f'{self.name} | {self.pretty_date()}', 1)
-
-        self.quote = Quote()
-        self.quote.load().print()
-
-        for day_question in self.day_questions:
-            day_question.ask()
-            
-        self.print('')
-
-    def markdown(self):
-        md = f'# {self.name}\n\n{self.pretty_date()}\n\n'
-        md += self.quote.markdown()
-        for day_question in self.day_questions:
-            md += day_question.markdown()
-        return md
-
-    def save(self):
-        file = open(f'journals/{self.year()}/{self.prefix}{self.iso_date()}.md', 'w+')
-        file.write(self.markdown())
-        file.close()
-
-
-class Question(Printable):
+class Question:
 
     def __init__(self, question, total_answers=3) -> None:
         self.question = question
         self.total_answers = total_answers
-        self.quote = None
-        self.answers = []
+        self._quote = None
+        self._answers = []
 
-    def ask(self):
-        self.print(self.content())
-        for idx in range(0, self.total_answers):
-            self.answers.append(Answer(idx))
+    def answer(self, id: str, answer: str):
+        self._answers.append(Answer(id, answer))
 
     def content(self):
         return self.question
 
-    def markdown(self) -> str:
-        md = f'## {self.content()}\n\n'
-        if len(self.answers) > 0:
-            for answer in self.answers:
-                md += answer.markdown()
-        else:
-            md += 'No answer.\n'
-        return md + '\n\n'
+    def answers(self):
+        return self._answers
+
+    # def markdown(self) -> str:
+    #     md = f'## {self.content()}\n\n'
+    #     if len(self._answers) > 0:
+    #         for answer in self._answers:
+    #             md += answer.markdown()
+    #     else:
+    #         md += 'No answer.\n'
+    #     return md + '\n\n'
 
     def __str__(self) -> str:
-        answers = '\n '.join(map(str, self.answers))
+        answers = '\n '.join(map(str, self._answers))
         return f"<Question content='{self.question}'>\n {answers}\n</Question>"
 
 
 class Answer:
 
-    def __init__(self, idx) -> None:
-        self.idx = idx
-        self.answer = input(f'\n {idx + 1}. ')
+    def __init__(self, id, answer) -> None:
+        self._id = id
+        self._answer = answer
 
     def id(self):
-        return f'{self.idx + 1}'
+        return self._id
 
     def content(self):
-        return self.answer
-
-    def markdown(self):
-        return f'{self.id()}. {self.content()}\n'
+        return self._answer
 
     def __str__(self) -> str:
         return f'<Answer id={self.id()} content="{self.content()}"/>'
 
 
-class Quote(Printable):
+class Quote:
 
     def __init__(self) -> None:
         pass
@@ -115,18 +119,54 @@ class Quote(Printable):
     def load(self):
         quote_response = requests.get(QUOTE_API)
         data = json.loads(quote_response.content)
-        self.quote = data[0]['q']
-        self.author = data[0]['a']
+        self._content = data[0]['q']
+        self._author = data[0]['a']
         return self
 
-    def markdown(self):
-        return '> ' + ('\n> '.join([
-            self.quote,
-            '',
-            f'~ {self.author}'
-        ])) + '\n\n\n'
+    def content(self):
+        return self._content
 
-    def print(self):
-        if (self.quote and self.author):
-            super().print(f'"{self.quote}"')
-            super().print(f'~ {self.author}', 1)
+    def author(self):
+        return self._author
+
+    # def print(self):
+    #     if (self.content() and self.author()):
+    #         super().print(f'"{self.content()}"')
+    #         super().print(f'~ {self.author()}', 1)
+
+
+class JournalCommandLine:
+
+    def __init__(self, journal: Journal, quote: Quote, storage: BaseStorageProvider) -> None:
+        self._journal = journal
+        self._quote = quote
+        self._storage = storage
+
+    def ask(self, question):
+        self.print(question.content())
+        for idx in range(0, question.total_answers):
+            id = idx + 1
+            question.answer(id, input(f'\n {id}. '))
+
+    def prompt(self):
+        self.print(self._journal.header_title(), 1)
+
+        self._quote.load()
+
+        if (self._quote.content() and self._quote.author()):
+            self.print(f'"{self._quote.content()}"')
+            self.print(f'~ {self._quote.author()}', 1)
+
+        if self._storage.exists(self._journal):
+            for question in self._journal.night_questions():
+                self.ask(question)
+        else:
+            for question in self._journal.day_questions():
+                self.ask(question)
+
+    def save(self):
+        self._storage.save(self._journal, self._quote)
+
+    def print(self, str, n=2):
+        newlines = n * '\n'
+        print(f"{newlines} {str}")
