@@ -8,7 +8,7 @@ class BaseQuoteProvider:
     _author = ''
 
     def request(self):
-        if self is None:
+        if self.api is None:
             print('BaseQuoteProvider.api not set')
         return requests.get(self.api)
 
