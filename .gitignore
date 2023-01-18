@@ -1,5 +1,7 @@
 .DS_Store
-.journals
+journals/*
+!journals/header-template.md
+!journals/question-template.md
 FEATURES.md
 
 
