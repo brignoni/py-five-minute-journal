@@ -1,5 +1,4 @@
-import config 
-# import NAMESPACE, TITLE, DAY_QUESTIONS, NIGHT_QUESTIONS, OUTPUT_DIR
+import config
 from providers.MarkdownStorageProvider import MarkdownStorageProvider
 from providers.ZenQuoteProvider import ZenQuoteProvider
 from PyFiveMinuteJournal import Journal, JournalCommandLine
