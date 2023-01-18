@@ -11,13 +11,23 @@ pip3 install python-dotenv
 pip3 install -U Jinja2
 ```
 
-### Start the daily Five Minute Journal
+### Start your daily Five Minute Journal
 In the morning run the command. Running it again in the evening will give you a different set of questions.
 
 ```
 python3 journal.py
 ```
 
+Your journal markdown files will be saved in the `journals` directory.
+
+```
+2022/5MJ-2022-12-31.md
+2023/5MJ-2023-01-01.md
+2023/5MJ-2023-01-02.md
+2023/5MJ-2023-01-02.md
+2023/5MJ-2023-01-04.md
+2023/5MJ-2023-01-05.md
+```
 
 ### Example Journal Output
 
