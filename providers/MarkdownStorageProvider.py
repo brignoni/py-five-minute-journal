@@ -75,6 +75,7 @@ class MarkdownStorageProvider(BaseStorageProvider):
             title=journal.title(),
             date=journal.pretty_date()
         ) + '\n\n' + self._question_template.render(
+            time=journal.iso_time(),
             questions=self.day_questions(journal)
         )
 
@@ -88,6 +89,7 @@ class MarkdownStorageProvider(BaseStorageProvider):
     def save_night(self, journal):
 
         output = self._question_template.render(
+            time=journal.iso_time(),
             questions=self.night_questions(journal)
         )
 
