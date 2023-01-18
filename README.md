@@ -4,7 +4,7 @@ A simple Python application inspired by [The Five Minute Journal - Intelligent C
 
 ![Python Five Minute Journal Cover](cover.jpg)
 
-Read the Hashnode article [here](https://brignoni.dev/preview/63c5bd0a7b3b430008b12dd2).
+Read the Hashnode article [here](https://brignoni.dev/the-python-five-minute-journal).
 
 ### Installation
 
