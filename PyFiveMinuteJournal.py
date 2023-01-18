@@ -44,6 +44,9 @@ class Journal:
 
     def night_questions(self):
         return self._night_questions
+    
+    def __len__(self):
+        return len(self.day_questions()) + len(self.night_questions())
 
 
 class Question:
@@ -55,7 +58,8 @@ class Question:
         self._answers = []
 
     def answer(self, id: str, answer: str):
-        self._answers.append(Answer(id, answer))
+        if len(answer) > 0:
+            self._answers.append(Answer(id, answer))
 
     def content(self):
         return self.question
@@ -63,18 +67,12 @@ class Question:
     def answers(self):
         return self._answers
 
-    # def markdown(self) -> str:
-    #     md = f'## {self.content()}\n\n'
-    #     if len(self._answers) > 0:
-    #         for answer in self._answers:
-    #             md += answer.markdown()
-    #     else:
-    #         md += 'No answer.\n'
-    #     return md + '\n\n'
-
     def __str__(self) -> str:
         answers = '\n '.join(map(str, self._answers))
         return f"<Question content='{self.question}'>\n {answers}\n</Question>"
+    
+    def __len__(self):
+        return len(self._answers)
 
 
 class Answer:
@@ -143,7 +141,6 @@ class JournalCommandLine:
                 self._storage.file_path(self._journal)
             )
             self.print('')
-
         else:
             self.print(self._journal.header_title(), 1)
             self.prompt_quote()

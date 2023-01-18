@@ -34,9 +34,6 @@ class MarkdownStorageProvider(BaseStorageProvider):
         except FileNotFoundError:
             return False
 
-    def exists(self, journal):
-        return self.filled_times(journal, 1)
-
     def filled_once(self, journal):
         return self.filled_times(journal, 1)
 
@@ -56,15 +53,15 @@ class MarkdownStorageProvider(BaseStorageProvider):
         }
 
     def day_questions(self, journal):
-        return map(self.transform_question, journal.day_questions())
+        return list(map(self.transform_question, filter(len, journal.day_questions())))
 
     def night_questions(self, journal):
-        return map(self.transform_question, journal.night_questions())
+        return list(map(self.transform_question, filter(len, journal.night_questions())))
 
     def save(self, journal, quote):
-        if self.filled_once(journal):
+        if self.filled_once(journal) and len(journal) > 0:
             self.save_night(journal)
-        elif not self.filled_twice(journal):
+        elif not self.filled_twice(journal) and len(journal) > 0:
             self.save_day(journal, quote)
 
     def save_day(self, journal, quote):
