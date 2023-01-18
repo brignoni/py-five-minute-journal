@@ -1,9 +1,6 @@
 from datetime import datetime
-import json
-import requests
 from providers.BaseStorageProvider import BaseStorageProvider
-
-QUOTE_API = 'https://zenquotes.io/api/today'
+from providers.BaseQuoteProvider import BaseQuoteProvider
 
 
 class Journal:
@@ -44,7 +41,7 @@ class Journal:
 
     def night_questions(self):
         return self._night_questions
-    
+
     def __len__(self):
         return len(self.day_questions()) + len(self.night_questions())
 
@@ -70,7 +67,7 @@ class Question:
     def __str__(self) -> str:
         answers = '\n '.join(map(str, self._answers))
         return f"<Question content='{self.question}'>\n {answers}\n</Question>"
-    
+
     def __len__(self):
         return len(self._answers)
 
@@ -91,28 +88,9 @@ class Answer:
         return f'<Answer id={self.id()} content="{self.content()}"/>'
 
 
-class Quote:
-
-    def __init__(self) -> None:
-        pass
-
-    def load(self):
-        quote_response = requests.get(QUOTE_API)
-        data = json.loads(quote_response.content)
-        self._content = data[0]['q']
-        self._author = data[0]['a']
-        return self
-
-    def content(self):
-        return self._content
-
-    def author(self):
-        return self._author
-
-
 class JournalCommandLine:
 
-    def __init__(self, journal: Journal, quote: Quote, storage: BaseStorageProvider) -> None:
+    def __init__(self, journal: Journal, quote: BaseQuoteProvider, storage: BaseStorageProvider) -> None:
         self._journal = journal
         self._quote = quote
         self._storage = storage

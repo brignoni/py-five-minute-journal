@@ -1,7 +1,8 @@
 import config 
 # import NAMESPACE, TITLE, DAY_QUESTIONS, NIGHT_QUESTIONS, OUTPUT_DIR
 from providers.MarkdownStorageProvider import MarkdownStorageProvider
-from PyFiveMinuteJournal import Quote, Journal, JournalCommandLine
+from providers.ZenQuoteProvider import ZenQuoteProvider
+from PyFiveMinuteJournal import Journal, JournalCommandLine
 
 def main():
     
@@ -18,7 +19,7 @@ def main():
         config.QUESTION_TEMPLATE
     )
 
-    quote = Quote()
+    quote = ZenQuoteProvider()
 
     quote_cli = JournalCommandLine(
         journal,
