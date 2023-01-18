@@ -52,12 +52,6 @@ class MarkdownStorageProvider(BaseStorageProvider):
             'answers': map(self.transform_answer, q.answers()),
         }
 
-    def day_questions(self, journal):
-        return list(map(self.transform_question, filter(len, journal.day_questions())))
-
-    def night_questions(self, journal):
-        return list(map(self.transform_question, filter(len, journal.night_questions())))
-
     def save(self, journal, quote):
         if self.filled_once(journal) and len(journal) > 0:
             self.save_night(journal)

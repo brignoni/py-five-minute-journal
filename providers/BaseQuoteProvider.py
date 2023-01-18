@@ -13,7 +13,7 @@ class BaseQuoteProvider:
         return requests.get(self.api)
 
     def load(self):
-        print('Must implement BaseQuoteProvider.load method')
+        print('Must implement BaseQuoteProvider.load() method')
         return self
 
     def content(self):

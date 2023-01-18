@@ -31,7 +31,7 @@ class Journal:
         return self._datetime.strftime('%I:%M %p')
 
     def pretty_date(self) -> str:
-        return self._datetime.strftime('%A, %b %w %Y')
+        return self._datetime.strftime('%A, %b %d %Y')
 
     def header_title(self) -> str:
         return f'{self._title} | {self.pretty_date()}'
