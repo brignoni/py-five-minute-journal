@@ -4,15 +4,30 @@ A simple Python application inspired by [The Five Minute Journal - Intelligent C
 
 Read the Hashnode article [here](https://brignoni.dev/preview/63c5bd0a7b3b430008b12dd2).
 
-### Example Markdown Output
+### Installation
+
+```
+pip3 install python-dotenv
+pip3 install -U Jinja2
+```
+
+### Start the daily Five Minute Journal
+In the morning run the command. Running it again in the evening will give you a different set of questions.
+
+```
+python3 journal.py
+```
+
+
+### Example Journal Output
 
 ```markdown
 
 Five Minute Journal | Friday, Jan 1 2023
 
-> Silence is a source of great strength.
+> Dwell on the beauty of life. Watch the stars, and see yourself running with them.
 > 
-> ~ Lao Tzu
+> ~ Marcus Aurelius, Meditations
 
 ---
 07:55 AM
