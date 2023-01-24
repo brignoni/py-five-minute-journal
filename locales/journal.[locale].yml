@@ -1,0 +1,20 @@
+# The Python Five Minute Journal
+# License: [MIT](https://choosealicense.com/licenses/mit/)
+# Locale Name: [language name]
+# Locale Code: [language code]
+# Locale Code Reference: https://www.w3.org/International/O-charset-lang.html
+# First Translator: [name] <[email]>
+# First Translated Date: [year-month-day]
+# Last Translator: [name] <[email]>
+# Last Translated Date: [year-month-day]
+
+[locale code]:
+  title: Five Minute Journal
+  complete: It is already complete!
+  saved: Today's journal was saved
+  questions:
+    i_am_grateful_for: I am grateful for...
+    what_would_make_today_great: What would make today great?
+    daily_affirmations: Daily affirmations
+    highlights_of_the_day: Highlights of the day
+    what_did_i_learn_today: What did I learn today?
