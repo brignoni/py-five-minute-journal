@@ -86,13 +86,15 @@ Five Minute Journal | Wednesday, Jan 18 2023
 ## Environment Variables
 To customize some behaviors, copy the `.env.example` file and rename it to `.env`. For example, you can set the locale to Portuguese.
 
-```
+```yml
+# .env
 LOCALE=pt
 ```
 
 These are the available variables.
 
-```
+```yml
+# .env.example
 LOCALE=en
 TITLE="Five Minute Journal"
 NAMESPACE="5MJ"
@@ -117,6 +119,20 @@ Pull requests are welcome. For major changes, please open an issue first to disc
 1. Copy the locale template `locales/journal.[locale].yml`.
 2. Substitute the placeholders and translations.
 3. Send a pull request.
+
+```yml
+# locales/journal.pt.yml
+pt:
+  title: Diário de Cinco Minutos
+  complete: Já está completo!
+  saved: O diário de hoje foi salvo
+  questions:
+    i_am_grateful_for: Estou agradecido por...
+    what_would_make_today_great: O que é que hoje em dia seria óptimo?
+    daily_affirmations: Afirmações diárias
+    highlights_of_the_day: Destaques do dia
+    what_did_i_learn_today: O que é que aprendi hoje?
+```
 
 ## License
 [MIT](https://choosealicense.com/licenses/mit/)
