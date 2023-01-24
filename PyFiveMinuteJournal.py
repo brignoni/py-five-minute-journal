@@ -5,12 +5,16 @@ from providers.BaseQuoteProvider import BaseQuoteProvider
 
 class Journal:
 
-    def __init__(self, namespace: str, title: str, day_questions: list, night_questions: list) -> None:
+    def __init__(self, namespace: str, title: str, day_questions: list, night_questions: list, default_total_answers: int = 3) -> None:
         self._title = title
         self._datetime = datetime.today()
         self._namespace = namespace
-        self._day_questions = list(map(Question, day_questions))
-        self._night_questions = list(map(Question, night_questions))
+        self._default_total_answers = default_total_answers
+        self._day_questions = list(map(self.add_question, day_questions))
+        self._night_questions = list(map(self.add_question, night_questions))
+
+    def add_question(self, question: str):
+        return Question(question=question, total_answers=self._default_total_answers)
 
     def namespace(self) -> str:
         return self._namespace
@@ -66,7 +70,7 @@ class Question:
 
     def __str__(self) -> str:
         answers = '\n '.join(map(str, self._answers))
-        return f"<Question content='{self.question}'>\n {answers}\n</Question>"
+        return f"<Question content='{self.content()}'>\n {answers}\n</Question>"
 
     def __len__(self):
         return len(self._answers)
@@ -90,10 +94,11 @@ class Answer:
 
 class JournalCommandLine:
 
-    def __init__(self, journal: Journal, quote: BaseQuoteProvider, storage: BaseStorageProvider) -> None:
+    def __init__(self, journal: Journal, quote: BaseQuoteProvider, storage: BaseStorageProvider, messages: dict) -> None:
         self._journal = journal
         self._quote = quote
         self._storage = storage
+        self._messages = messages
 
     def ask(self, question):
         self.print(question.content())
@@ -114,19 +119,25 @@ class JournalCommandLine:
             for question in self._journal.night_questions():
                 self.ask(question)
         elif self._storage.filled_twice(self._journal):
-            self.print(
-                "Today's journal is here: " +
-                self._storage.file_path(self._journal)
-            )
-            self.print('')
+            self.print(self._messages.get('complete'))
         else:
             self.print(self._journal.header_title(), 1)
             self.prompt_quote()
             for question in self._journal.day_questions():
                 self.ask(question)
 
+    def print_here(self):
+        message_saved = self._messages.get('saved')
+        self.print(
+            f'{message_saved}: {self._storage.file_path(self._journal)}')
+        self.print('')
+
     def save(self):
         self._storage.save(self._journal, self._quote)
+        message_saved = self._messages.get('saved')
+        self.print(
+            f'{message_saved}: {self._storage.file_path(self._journal)}')
+        self.print('')
 
     def print(self, str, n=2):
         newlines = n * '\n'

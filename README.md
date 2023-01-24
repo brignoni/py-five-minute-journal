@@ -83,11 +83,40 @@ Five Minute Journal | Wednesday, Jan 18 2023
 
 ```
 
+## Environment Variables
+To customize some behaviors, copy the `.env.example` file and rename it to `.env`. For example, you can set the locale to Portuguese.
+
+```
+LOCALE=pt
+```
+
+These are the available variables.
+
+```
+LOCALE=en
+TITLE="Five Minute Journal"
+NAMESPACE="5MJ"
+DEFAULT_ANSWER_COUNT=3
+HEADER_TEMPLATE="header-template.md"
+QUESTION_TEMPLATE="question-template.md"
+OUTPUT_DIR="journals"
+```
+
+## Available Locales
+- English (en) | Default
+- Portuguese (es)
+- Spanish (es)
+
 ## Contributing
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
 
 <!-- Please make sure to update tests as appropriate. -->
 <!-- @todo Add tests -->
+
+## Contributing a locale
+1. Copy the locale template `locales/journal.[locale].yml`.
+2. Substitute the placeholders and translations.
+3. Send a pull request.
 
 ## License
 [MIT](https://choosealicense.com/licenses/mit/)

@@ -1,31 +1,43 @@
-from os import getenv
+import gettext
+import i18n
 from dotenv import load_dotenv
+from os import getenv, environ
 
 load_dotenv()
 
-def multiline(value: str):
-    return  list(filter(lambda s: s, value.split("\n")))
+i18n.load_path.append('locales')
+i18n.set('locale', getenv('LOCALE', 'en'))
+i18n.set('fallback', 'en')
+_ = i18n.t
 
-TITLE = getenv('TITLE', 'Five Minute Journal')
+
+def multiline(value: str):
+    return list(filter(lambda s: s, value.split("\n")))
+
+
+MESSAGES = {
+    'complete': _("journal.complete"),
+    'saved': _("journal.saved"),
+}
+
+TITLE = getenv('TITLE', _('journal.title'))
 
 NAMESPACE = getenv('NAMESPACE', '5MJ')
 
 DAY_QUESTIONS = multiline(getenv('DAY_QUESTIONS', "\n".join([
-    'I am grateful for...',
-    'What would make today great?',
-    'Daily affirmations',
+    _('journal.questions.i_am_grateful_for'),
+    _('journal.questions.what_would_make_today_great'),
+    _('journal.questions.daily_affirmations'),
 ])))
 
 NIGHT_QUESTIONS = multiline(getenv('NIGHT_QUESTIONS', '\n'.join([
-    'Highlights of the day',
-    'What did I learn today?',
+    _('journal.questions.highlights_of_the_day'),
+    _('journal.questions.what_did_i_learn_today'),
 ])))
 
-DEFAULT_ANSWER_COUNT = int(getenv('DEFAULT_ANSWER_COUNT', '3'))
+DEFAULT_TOTAL_ANSWERS = int(getenv('DEFAULT_TOTAL_ANSWERS', '3'))
 
 HEADER_TEMPLATE = getenv('HEADER_TEMPLATE', 'header-template.md')
 QUESTION_TEMPLATE = getenv('QUESTION_TEMPLATE', 'question-template.md')
 
 OUTPUT_DIR = getenv('OUTPUT_DIR', 'journals')
-
-# TIMEZONE

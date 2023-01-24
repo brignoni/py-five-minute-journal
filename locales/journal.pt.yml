@@ -1,0 +1,20 @@
+# The Python Five Minute Journal
+# License: [MIT](https://choosealicense.com/licenses/mit/)
+# Locale Name: Portuguese
+# Locale Code: pt
+# Locale Code Reference: https://www.w3.org/International/O-charset-lang.html
+# First Translator: Osvaldo Brignoni <py5mj@brignoni.dev>
+# First Translated Date: 2023-01-24
+# Last Translator: Osvaldo Brignoni <py5mj@brignoni.dev>
+# Last Translated Date: 2023-01-24
+
+pt:
+  title: Diário de Cinco Minutos
+  complete: Já está completo!
+  saved: O diário de hoje foi salvo
+  questions:
+    i_am_grateful_for: Estou agradecido por...
+    what_would_make_today_great: O que é que hoje em dia seria óptimo?
+    daily_affirmations: Afirmações diárias
+    highlights_of_the_day: Destaques do dia
+    what_did_i_learn_today: O que é que aprendi hoje?
