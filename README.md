@@ -4,13 +4,22 @@ A simple Python application inspired by [The Five Minute Journal - Intelligent C
 
 ![Python Five Minute Journal Cover](cover.jpg)
 
-Read the Hashnode article [here](https://brignoni.dev/the-python-five-minute-journal).
+## Read the article featured on Hashnode
+[brignoni.dev/the-python-five-minute-journal](https://brignoni.dev/the-python-five-minute-journal)
+
+---
+
+## Requirements
+* Python >=3.7
+* pip
+* requests
+* python-dotenv==0.21.0
+* Jinja2==3.1.2
 
 ### Installation
 
 ```
-pip3 install python-dotenv
-pip3 install -U Jinja2
+pip install -r requirements.txt
 ```
 
 ### Start your daily Five Minute Journal
@@ -31,7 +40,7 @@ Your journal markdown files will be saved in the `journals` directory.
 2023/5MJ-2023-01-05.md
 ```
 
-### Example Journal Output
+The Markdown file.
 
 ```markdown
 
@@ -73,3 +82,12 @@ Five Minute Journal | Wednesday, Jan 18 2023
 3. Studied for AWS Certified SysOps Admin Associate
 
 ```
+
+## Contributing
+Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
+
+<!-- Please make sure to update tests as appropriate. -->
+<!-- @todo Add tests -->
+
+## License
+[MIT](https://choosealicense.com/licenses/mit/)
