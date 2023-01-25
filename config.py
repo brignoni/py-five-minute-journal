@@ -1,11 +1,19 @@
-import gettext
 import i18n
 from dotenv import load_dotenv
-from os import getenv, environ
+from os import getenv, environ, path
 
 load_dotenv()
 
-i18n.load_path.append('locales')
+# getting the name of the directory
+# where the this file is present.
+ROOT_DIR = path.dirname(path.realpath(__file__))
+
+OUTPUT_DIR = getenv('OUTPUT_DIR', 'journals')
+
+if not OUTPUT_DIR.startswith('/'):
+    OUTPUT_DIR = f'{ROOT_DIR}/{OUTPUT_DIR}'
+
+i18n.load_path.append(f'{ROOT_DIR}/locales')
 i18n.set('locale', getenv('LOCALE', 'en'))
 i18n.set('fallback', 'en')
 _ = i18n.t
@@ -40,4 +48,4 @@ DEFAULT_TOTAL_ANSWERS = int(getenv('DEFAULT_TOTAL_ANSWERS', '3'))
 HEADER_TEMPLATE = getenv('HEADER_TEMPLATE', 'header-template.md')
 QUESTION_TEMPLATE = getenv('QUESTION_TEMPLATE', 'question-template.md')
 
-OUTPUT_DIR = getenv('OUTPUT_DIR', 'journals')
+
