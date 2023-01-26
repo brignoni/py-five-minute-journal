@@ -1,6 +1,6 @@
 import i18n
 from dotenv import load_dotenv
-from os import getenv, environ, path
+from os import getenv, path
 
 load_dotenv()
 
