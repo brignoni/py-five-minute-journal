@@ -20,19 +20,19 @@ _ = i18n.t
 
 
 def multiline(value: str):
-    return list(filter(lambda s: s, value.split("\n")))
+    return list(filter(lambda s: s, value.split('\n')))
 
 
 MESSAGES = {
-    'complete': _("journal.complete"),
-    'saved': _("journal.saved"),
+    'complete': _('journal.complete'),
+    'saved': _('journal.saved'),
 }
 
 TITLE = getenv('TITLE', _('journal.title'))
 
 NAMESPACE = getenv('NAMESPACE', '5MJ')
 
-DAY_QUESTIONS = multiline(getenv('DAY_QUESTIONS', "\n".join([
+DAY_QUESTIONS = multiline(getenv('DAY_QUESTIONS', '\n'.join([
     _('journal.questions.i_am_grateful_for'),
     _('journal.questions.what_would_make_today_great'),
     _('journal.questions.daily_affirmations'),
