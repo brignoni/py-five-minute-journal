@@ -1,0 +1,20 @@
+# The Python Five Minute Journal
+# License: [MIT](https://choosealicense.com/licenses/mit/)
+# Locale Name: [Swedish]
+# Locale Code: [sv]
+# Locale Code Reference: https://www.w3.org/International/O-charset-lang.html
+# First Translator: [Sambhavi] <hello.sambhavi@gmail.com>
+# First Translated Date: [2023-01-27]
+# Last Translator: [Sambhavi] <hello.sambhavi@gmail.com>
+# Last Translated Date: [2023-01-27]
+
+[sv]:
+  title: Fem minuters dagbok
+  complete: Den är redan klar!
+  saved: Dagens journal sparades
+  questions:
+    i_am_grateful_for: Jag är tacksam för...
+    what_would_make_today_great: Vad skulle göra dagen stor?
+    daily_affirmations: Dagliga affirmationer
+    highlights_of_the_day: Dagens höjdpunkter
+    what_did_i_learn_today: Vad lärde jag mig idag?
