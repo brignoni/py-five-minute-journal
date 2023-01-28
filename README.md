@@ -105,10 +105,12 @@ OUTPUT_DIR="journals"
 ```
 
 ## Available Locales
-- English (en) | Default
-- Portuguese (es)
-- Spanish (es)
-- Swedish (sv) | Thanks [@SambhaviPD](https://github.com/SambhaviPD)
+- en - English. (Default)
+- es - Spanish.
+- it - Italian. Thanks [@dariocast](https://github.com/dariocast)
+- pt - Portuguese.
+- sv - Swedish. Thanks [@SambhaviPD](https://github.com/SambhaviPD)
+
 
 ## Contributing
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
