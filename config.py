@@ -1,6 +1,7 @@
 import i18n
 from dotenv import load_dotenv
 from os import getenv, path
+import locale
 
 load_dotenv()
 
@@ -17,6 +18,12 @@ i18n.load_path.append(f'{ROOT_DIR}/locales')
 i18n.set('locale', getenv('LOCALE', 'en'))
 i18n.set('fallback', 'en')
 _ = i18n.t
+
+try:
+    time_locale = f'{i18n.get("locale")}_{i18n.get("locale").upper()}'
+    locale.setlocale(locale.LC_TIME, time_locale)
+except Exception:
+    pass
 
 
 def multiline(value: str):
