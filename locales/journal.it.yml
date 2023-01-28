@@ -1,0 +1,20 @@
+# The Python Five Minute Journal
+# License: [MIT](https://choosealicense.com/licenses/mit/)
+# Locale Name: Italian
+# Locale Code: it
+# Locale Code Reference: https://www.w3.org/International/O-charset-lang.html
+# First Translator: Dario Castellano <dariocastellano18@gmail.com>
+# First Translated Date: 2023-01-28
+# Last Translator: Dario Castellano <dariocastellano18@gmail.com>
+# Last Translated Date: 2023-01-28
+
+it:
+  title: Five Minute Journal
+  complete: È quasi completo!
+  saved: Il five minute journal di oggi è stato salvato
+  questions:
+    i_am_grateful_for: Sono grato per...
+    what_would_make_today_great: Cosa renderebbe oggi una giornata grandiosa?
+    daily_affirmations: Le affermazioni di oggi
+    highlights_of_the_day: Highlights della giornata
+    what_did_i_learn_today: Cosa ho imparato oggi?
