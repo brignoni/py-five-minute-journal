@@ -9,10 +9,8 @@ load_dotenv()
 # where the this file is present.
 ROOT_DIR = path.dirname(path.realpath(__file__))
 
-OUTPUT_DIR = getenv('OUTPUT_DIR', 'journals')
-
-if not OUTPUT_DIR.startswith('/'):
-    OUTPUT_DIR = f'{ROOT_DIR}/{OUTPUT_DIR}'
+OUTPUT_DIR = getenv('OUTPUT_DIR', 'journals')    
+TEMPLATE_DIR = getenv('TEMPLATE_DIR', 'journals')
 
 i18n.load_path.append(f'{ROOT_DIR}/locales')
 i18n.set('locale', getenv('LOCALE', 'en'))

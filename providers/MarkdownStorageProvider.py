@@ -9,17 +9,17 @@ class MarkdownStorageProvider(BaseStorageProvider):
 
     TIME_REGEX = r'(\d{2}:\d{2} \w{2})'
 
-    def __init__(self, dir: str, header_template: str, question_template: str) -> None:
-        self._dir = dir
+    def __init__(self, output_dir: str, template_dir: str, header_template: str, question_template: str) -> None:
+        self._output_dir = output_dir
         env = Environment(
-            loader=PackageLoader('journal', dir),
+            loader=PackageLoader('journal', template_dir),
             autoescape=select_autoescape()
         )
         self._header_template = env.get_template(header_template)
         self._question_template = env.get_template(question_template)
 
     def year_path(self, journal):
-        return f'{self._dir}/{journal.year()}'
+        return f'{self._output_dir}/{journal.year()}'
 
     def file_path(self, journal):
         return f'{self.year_path(journal)}/{journal.id()}.md'

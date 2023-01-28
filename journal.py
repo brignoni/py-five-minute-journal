@@ -15,6 +15,7 @@ def main():
 
     storage = MarkdownStorageProvider(
         config.OUTPUT_DIR,
+        config.TEMPLATE_DIR,
         config.HEADER_TEMPLATE,
         config.QUESTION_TEMPLATE
     )
