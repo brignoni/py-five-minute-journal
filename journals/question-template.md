@@ -1,4 +1,5 @@
-{% if questions %}---
+{% if questions %}
+---
 {{ time }}
 
 {% for question in questions %}### {{ question.content }}
