@@ -2,11 +2,22 @@ import os
 import re
 import shutil
 from pathlib import Path
-from providers.BaseStorageProvider import BaseStorageProvider
 from jinja2 import Environment, FileSystemLoader, select_autoescape
 
 
-class MarkdownStorageProvider(BaseStorageProvider):
+class JournalStorage:
+
+    def questions_day(self, journal):
+        return filter(len, journal.questions_day())
+
+    def questions_night(self, journal):
+        return filter(len, journal.questions_night())
+
+    def save(self, journal, quote):
+        print('Must implement save method')
+
+
+class MarkdownJournalStorage(JournalStorage):
 
     TIME_REGEX = r'---\n(\d{2}:\d{2})'
 
@@ -59,18 +70,6 @@ class MarkdownStorageProvider(BaseStorageProvider):
     def filled_twice(self, journal):
         return self.filled_times(journal, 2)
 
-    def transform_answer(self, a):
-        return {
-            'id': a.id(),
-            'content': a.content()
-        }
-
-    def transform_question(self, q):
-        return {
-            'content': q.content(),
-            'answers': map(self.transform_answer, q.answers()),
-        }
-
     def save(self, journal, quote):
         if self.filled_once(journal) and len(journal) > 0:
             self.save_night(journal)
@@ -80,13 +79,12 @@ class MarkdownStorageProvider(BaseStorageProvider):
     def save_day(self, journal, quote):
 
         output = self._header_template.render(
-            author=quote.author(),
-            quote=quote.content(),
+            quote=quote,
             title=journal.title(),
-            date=journal.pretty_date()
+            date=journal.date(),
         ) + '\n\n' + self._question_template.render(
-            time=journal.iso_time(),
-            questions=self.day_questions(journal)
+            time=journal.time(),
+            questions=self.questions_day(journal)
         )
 
         if not os.path.exists(self.year_path(journal)):
@@ -99,8 +97,8 @@ class MarkdownStorageProvider(BaseStorageProvider):
     def save_night(self, journal):
 
         output = self._question_template.render(
-            time=journal.iso_time(),
-            questions=self.night_questions(journal)
+            time=journal.time(),
+            questions=self.questions_night(journal)
         )
 
         file = open(self.file_path(journal), 'a')

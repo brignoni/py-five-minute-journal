@@ -1,0 +1,41 @@
+# pyproject.toml
+
+[build-system]
+requires = ['setuptools>=61.0.0', 'wheel']
+build-backend = 'setuptools.build_meta'
+
+[project]
+name = 'fiveminutejournal'
+version = '1.0.0'
+description = 'A simple Python application inspired by The Five Minute Journal - Intelligent Change'
+readme = 'README.md'
+authors = [{ name = 'Osvaldo Brignoni', email = 'journal@brignoni.dev' }]
+license = { file = 'LICENSE' }
+classifiers = [
+    'Environment :: Console',
+    'License :: OSI Approved :: MIT License',
+    'Programming Language :: Python',
+    'Programming Language :: Python :: 3',
+]
+keywords = ['journal', 'cli', 'chatgpt']
+dependencies = [
+    'Jinja2>=3.1.2',
+    'requests>=2.28.2',
+    'python-dotenv>=0.21.0',
+    'python-i18n>=0.3.9',
+    'python-i18n[YAML]',
+    'pydash>=6.0.0',
+    'toml>=0.10.2',
+    'tomli; python_version < "3.11"',
+]
+requires-python = '>=3.7'
+
+[project.optional-dependencies]
+dev = ['black', 'bumpver', 'isort', 'pip-tools', 'pytest']
+
+[project.urls]
+Homepage = 'https://github.com/brignoni/py-five-minute-journal'
+Post = 'https://brignoni.dev/the-python-five-minute-journal'
+
+[project.scripts]
+fiveminutejournal = 'fiveminutejournal.__main__:main'

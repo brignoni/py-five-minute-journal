@@ -1,5 +1,5 @@
-{{ title }} | {{ date }}
+## {{ title }} | {{ date }}
 
-> {{ quote }}
+> {{ quote.text }}
 > 
-> ~ {{ author }}
+> ~ {{ quote.author }}
