@@ -1,0 +1,20 @@
+# The Python Five Minute Journal
+# License: [MIT](https://choosealicense.com/licenses/mit/)
+# Locale Name: French
+# Locale Code: fr
+# Locale Code Reference: https://www.w3.org/International/O-charset-lang.html
+# First Translator: Abel Lifaefi Mbula <news.abel@protonmail.com>
+# First Translated Date: 2023-05-22
+# Last Translator: Abel Lifaefi Mbula <news.abel@protonmail.com>
+# Last Translated Date: 2023-05-22
+
+fr:
+  title: Mon Journal 5 minutes
+  complete: Il est déjà terminé !
+  saved: Le journal d'aujourd'hui a été enregistré
+  questions:
+    i_am_grateful_for: Je suis reconnaissant pour...
+    what_would_make_today_great: Qu'est-ce qui rendrait cette journée exceptionnelle ?
+    daily_affirmations: Affirmations de la journée
+    highlights_of_the_day: Faits marquants de la journée
+    what_did_i_learn_today: Qu'est-ce que j'ai appris aujourd'hui ?
